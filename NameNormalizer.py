@@ -81,6 +81,99 @@ class NameNormalizer:
             for file in folders:
                 NameNormalizer._stripReg(regex, path, file)
 
+    @staticmethod
+    def _lowercase(*args):
+        src = os.path.join(*args)
+        dst = os.path.join(*args[0:-1], args[-1].lower())
+        if src == dst:
+            return
+        print(f"Lowercasing from {src} -> {dst}")
+        os.rename(src, dst)
+
+    @staticmethod
+    def _uppercase(*args):
+        src = os.path.join(*args)
+        dst = os.path.join(*args[0:-1], args[-1].upper())
+        if src == dst:
+            return
+        print(f"Uppercasing from {src} -> {dst}")
+        os.rename(src, dst)
+
+    @staticmethod
+    def _titlecase(*args):
+        src = os.path.join(*args)
+        dst = os.path.join(*args[0:-1], args[-1].title())
+        if src == dst:
+            return
+        print(f"Titlecasing from {src} -> {dst}")
+        os.rename(src, dst)
+
+    @staticmethod
+    def lowercaseArtist(root):
+        """ Lowercase all artists. """
+        for artist in os.listdir(root):
+            if not os.path.isdir(os.path.join(root, artist)):
+                continue
+            if artist != artist.lower():
+                NameNormalizer._lowercase(root, artist)
+
+    @staticmethod
+    def uppercaseArtist(root):
+        """ Uppercase all artists. """
+        for artist in os.listdir(root):
+            if not os.path.isdir(os.path.join(root, artist)):
+                continue
+            if artist != artist.upper():
+                NameNormalizer._uppercase(root, artist)
+
+    @staticmethod
+    def titlecaseArtist(root):
+        """ Titlecase all artists. """
+        for artist in os.listdir(root):
+            if not os.path.isdir(os.path.join(root, artist)):
+                continue
+            if artist != artist.title():
+                NameNormalizer._titlecase(root, artist)
+
+    @staticmethod
+    def lowercaseAlbum(root):
+        """ Lowercase all albums. """
+        for artist in os.listdir(root):
+            if not os.path.isdir(os.path.join(root, artist)):
+                continue
+            for album in os.listdir(os.path.join(root, artist)):
+                if not os.path.isdir(os.path.join(root, artist, album)):
+                    continue
+                if album != album.lower():
+                    NameNormalizer._lowercase(root, artist, album)
+
+    @staticmethod
+    def uppercaseAlbum(root):
+        """ Uppercase all albums. """
+        for artist in os.listdir(root):
+            if not os.path.isdir(os.path.join(root, artist)):
+                continue
+            for album in os.listdir(os.path.join(root, artist)):
+                if not os.path.isdir(os.path.join(root, artist, album)):
+                    continue
+                if album != album.upper():
+                    NameNormalizer._uppercase(root, artist, album)
+
+    @staticmethod
+    def titlecaseAlbum(root):
+        """ Titlecase all albums. """
+        for artist in os.listdir(root):
+            if not os.path.isdir(os.path.join(root, artist)):
+                continue
+            for album in os.listdir(os.path.join(root, artist)):
+                if not os.path.isdir(os.path.join(root, artist, album)):
+                    continue
+                if album != album.title():
+                    NameNormalizer._titlecase(root, artist, album)
+
+
+
+
 
 
 

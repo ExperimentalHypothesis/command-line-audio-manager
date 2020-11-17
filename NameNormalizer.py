@@ -1,4 +1,4 @@
-import os, argparse, re
+import os, argparse, re, shutil
 
 class NameNormalizer:
 
@@ -192,7 +192,13 @@ class NameNormalizer:
             filename = re.sub(r"[\s]+", " ", filename)
             dst = os.path.join(*args[0:-1], filename.strip())
             print(f"Stripping extra whitespace from {src} -> {dst}")
-            os.rename(src, dst)
+            try:
+                os.rename(src, dst)
+            except FileExistsError as e:
+                print(e)
+                print("removing duplicates")
+                shutil.rmtree(src)
+
 
     @staticmethod
     def _titlecase(*args):

@@ -100,15 +100,6 @@ class NameNormalizer:
         os.rename(src, dst)
 
     @staticmethod
-    def _titlecase(*args):
-        src = os.path.join(*args)
-        dst = os.path.join(*args[0:-1], args[-1].title())
-        if src == dst:
-            return
-        print(f"Titlecasing from {src} -> {dst}")
-        os.rename(src, dst)
-
-    @staticmethod
     def lowercaseArtist(root):
         """ Lowercase all artists. """
         for artist in os.listdir(root):
@@ -171,11 +162,41 @@ class NameNormalizer:
                 if album != album.title():
                     NameNormalizer._titlecase(root, artist, album)
 
+    @staticmethod
+    def stripWhitespaceFromArtist(root):
+        """ Strips additional (multiple) whitespace from all artists. """
+        for artist in os.listdir(root):
+            if not os.path.isdir(os.path.join(root, artist)):
+                continue
+            NameNormalizer._stripWhitespace(root, artist)
+
+    @staticmethod
+    def _stripWhitespace(*args):
+        """ Strip additional whitespaces. """
+        filename = args[-1]
+        src = os.path.join(*args)
+        hasExtraWhitespace = filename[0] == " " or filename[-1] == " " or "  " in filename
+
+        if hasExtraWhitespace:
+            filename = re.sub(r"[\s]+", " ", filename)
+            dst = os.path.join(*args[0:-1], filename.strip())
+            print(f"Stripping extra whitespace from {src} -> {dst}")
+            os.rename(src, dst)
+
+    @staticmethod
+    def _titlecase(*args):
+        src = os.path.join(*args)
+        dst = os.path.join(*args[0:-1], args[-1].title())
+        if src == dst:
+            return
+        print(f"Titlecasing from {src} -> {dst}")
+        os.rename(src, dst)
 
 
 
 
 
 
-# if __name__ == "__main__":
-#     runCommands()
+
+    # if __name__ == "__main__":
+

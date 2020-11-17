@@ -10,6 +10,9 @@ class ArgParser:
         """ Prepare the parse args. """
         parser = argparse.ArgumentParser()
 
+        parser.add_argument("-swar", "--stripwhitespacefromartist", action="store_true")
+        parser.add_argument("-swal", "--stripwhitespacefromalbum", action="store_true")
+        parser.add_argument("-swso", "--stripwhitespacefromsong", action="store_true")
         parser.add_argument("-lcar", "--lowercaseartist", action="store_true")
         parser.add_argument("-lcal", "--lowercasealbum", action="store_true")
         # parser.add_argument("-lcso", "--lowercasesong", action="store_true")
@@ -64,6 +67,9 @@ class ArgParser:
             NameNormalizer.NameNormalizer.titlecaseAlbum(args.root)
         # elif args.titlecasesong:
         #     NameNormalizer.NameNormalizer.titlecaseSong(args.root)
+        elif args.stripwhitespacefromartist:
+            NameNormalizer.NameNormalizer.stripWhitespaceFromArtist(args.root)
+
 
 
 

@@ -171,6 +171,17 @@ class NameNormalizer:
             NameNormalizer._stripWhitespace(root, artist)
 
     @staticmethod
+    def stripWhitespaceFromAlbum(root):
+        """ Strips additional (multiple) whitespace from all albums. """
+        for artist in os.listdir(root):
+            if not os.path.isdir(os.path.join(root, artist)):
+                continue
+            for album in os.listdir(os.path.join(root, artist)):
+                if not os.path.isdir(os.path.join(root, artist, album)):
+                    continue
+                NameNormalizer._stripWhitespace(root, artist, album)
+
+    @staticmethod
     def _stripWhitespace(*args):
         """ Strip additional whitespaces. """
         filename = args[-1]

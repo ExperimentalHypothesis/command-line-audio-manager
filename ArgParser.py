@@ -69,7 +69,8 @@ class ArgParser:
         #     NameNormalizer.NameNormalizer.titlecaseSong(args.root)
         elif args.stripwhitespacefromartist:
             NameNormalizer.NameNormalizer.stripWhitespaceFromArtist(args.root)
-
+        elif args.stripwhitespacefromalbum:
+            NameNormalizer.NameNormalizer.stripWhitespaceFromAlbum(args.root)
 
 
 

@@ -49,7 +49,7 @@ class NameNormalizer:
     def _stripReg(regex, *args) -> None:
         """ Strip regex expression from a filepath. """
         src = os.path.join(*args)
-        dst = os.path.join(*args[0:1], re.sub(regex, " ", args[-1]))
+        dst = os.path.join(*args[0:-1], re.sub(regex, " ", args[-1]))
         if src == dst:
             return
         print(f"Striping Regex {regex} from {src} -> {dst}")

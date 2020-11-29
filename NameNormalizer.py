@@ -1,13 +1,19 @@
 import os, argparse, re, shutil
 
 class NameNormalizer:
+    """
+    Class responsible for normalizing names for artist folders, album folders and song files.
 
-    # def __init__(self, root:str):
-    #     """ Specify the root path """
-    #     self.root = root
+    Artist name is normalized if it has only name of artist (eg. Steve Roach) or if it has name of album separated with - (eg. Steve Roach - Early Man)
+    Album name is normalized if it has only name of album (eg. Early Man) or if it has name of artist separated with - (eg. Steve Roach - Early Man)
+    Song name is normalized if it has number and name of song with extension (eg. 01 - Hey You.mp3)
 
-    # def __str__(self):
-    #     return f"NameNormalizer - {self.root}"
+    The goal of this class is to clean out all the additional chars, spaces numbers, abbreviations etc. that are often part of the name.
+
+    Normalization of names if the first step in processing.
+
+    It is done using CLI interface so that it is simpler and faster then manual renaming on filesystem.
+    """
 
     @staticmethod
     def _stripToken(token, *args):

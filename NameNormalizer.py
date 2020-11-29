@@ -1,5 +1,7 @@
 import os, argparse, re, shutil
 
+
+##  THIS CLASS IS USED FIRST
 class NameNormalizer:
     """
     Class responsible for normalizing names for artist folders, album folders and song files.
@@ -216,10 +218,24 @@ class NameNormalizer:
         os.rename(src, dst)
 
 
+    @staticmethod
+    def stripArtistFromAlbum(root):
+        """
+        Strip artist name from album name.
+        Some name have this format Steve Roach - Early Man.
+        This Function has to make it so that Steve Roach - Early Man becomes Early Man
+        """
+
+        for artist in os.listdir(root):
+            for album in os.listdir(os.path.join(root, artist)):
+                if artist in album and " - " in album:
+                    src = os.path.join(root, artist, album)
+                    dst = os.path.join(root, artist, album.replace(artist + " - ", ""))
+                    print("striping artist from " + album + " -> " + album.replace(artist + " - ", ""))
+                    os.rename(src, dst)
 
 
+if __name__ == "__main__":
+    root = r"C:\Users\lukas.kotatko\OneDrive - EP Commodities, a.s\Plocha\testing folder"
 
-
-
-    # if __name__ == "__main__":
-
+    NameNormalizer.stripArtistFromAlbum(root)

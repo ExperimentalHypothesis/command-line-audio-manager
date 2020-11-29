@@ -10,6 +10,7 @@ class ArgParser:
         """ Prepare the parse args. """
         parser = argparse.ArgumentParser()
 
+        # these are used to clean the strings before it is sorted to folders
         parser.add_argument("-swar", "--stripwhitespacefromartist", action="store_true")
         parser.add_argument("-swal", "--stripwhitespacefromalbum", action="store_true")
         parser.add_argument("-swso", "--stripwhitespacefromsong", action="store_true")
@@ -30,6 +31,10 @@ class ArgParser:
         parser.add_argument("-rgxso", "--stripregexfromsong", action="store_true")
         parser.add_argument("-T", "--token", type=str, required=False)
         parser.add_argument("-R", "--root", type=str, required=True)
+
+        # these should be used after sorting to folders, because if i strip artist before, it cannot be parsed to make the folders
+        parser.add_argument("-strip", "--stripartist", action="store_true")
+
         return parser.parse_args()
 
     @staticmethod
@@ -71,9 +76,11 @@ class ArgParser:
             NameNormalizer.NameNormalizer.stripWhitespaceFromArtist(args.root)
         elif args.stripwhitespacefromalbum:
             NameNormalizer.NameNormalizer.stripWhitespaceFromAlbum(args.root)
+        elif args.stripartist:
+            NameNormalizer.NameNormalizer.stripArtistFromAlbum(args.root)
 
-
-
+#
+#
 # if __name__ == "__main__":
 #     print("hello")
 #     ArgParser.runCommands()

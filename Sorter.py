@@ -1,6 +1,7 @@
 import os, shutil
 
 
+##  THIS CLASS IS USED SECOND
 class Sorter:
     """ Class responsible for sorting folders in root.
         There are several scenarios:

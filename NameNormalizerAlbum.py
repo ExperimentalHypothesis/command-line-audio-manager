@@ -7,7 +7,7 @@ class AlbumNameNormalizer(NameNormalizer):
     """ Class handling everything concerning album folders renaming. """
 
     @staticmethod
-    def stripTokenFromAlbumName(token, root) -> None:
+    def stripToken(token, root) -> None:
         """ Deletes a specified token from all artist folder names. """
         for artist in os.listdir(root):
             if not os.path.isdir(os.path.join(root, artist)):
@@ -18,7 +18,7 @@ class AlbumNameNormalizer(NameNormalizer):
                 NameNormalizer.stripToken(token, root, artist, album)
 
     @staticmethod
-    def stripRegFromAlbumName(regex, root) -> None:
+    def stripReg(regex, root) -> None:
         """ Deletes string that matches regex expression form album name. """
         for artist in os.listdir(root):
             if not os.path.isdir(os.path.join(root, artist)):
@@ -29,7 +29,18 @@ class AlbumNameNormalizer(NameNormalizer):
                 NameNormalizer.stripReg(regex, root, artist, album)
 
     @staticmethod
-    def lowercaseAlbum(root):
+    def stripWhitespace(root):
+        """ Strips additional (multiple) whitespace from all albums. """
+        for artist in os.listdir(root):
+            if not os.path.isdir(os.path.join(root, artist)):
+                continue
+            for album in os.listdir(os.path.join(root, artist)):
+                if not os.path.isdir(os.path.join(root, artist, album)):
+                    continue
+                NameNormalizer.stripWhitespace(root, artist, album)
+
+    @staticmethod
+    def lowercase(root):
         """ Lowercase all albums. """
         for artist in os.listdir(root):
             if not os.path.isdir(os.path.join(root, artist)):
@@ -41,7 +52,7 @@ class AlbumNameNormalizer(NameNormalizer):
                     NameNormalizer.lowercase(root, artist, album)
 
     @staticmethod
-    def uppercaseAlbum(root):
+    def uppercase(root):
         """ Uppercase all albums. """
         for artist in os.listdir(root):
             if not os.path.isdir(os.path.join(root, artist)):
@@ -53,7 +64,7 @@ class AlbumNameNormalizer(NameNormalizer):
                     NameNormalizer.uppercase(root, artist, album)
 
     @staticmethod
-    def titlecaseAlbum(root):
+    def titlecase(root):
         """ Titlecase all albums. """
         for artist in os.listdir(root):
             if not os.path.isdir(os.path.join(root, artist)):
@@ -65,18 +76,7 @@ class AlbumNameNormalizer(NameNormalizer):
                     NameNormalizer.titlecase(root, artist, album)
 
     @staticmethod
-    def stripWhitespaceFromAlbum(root):
-        """ Strips additional (multiple) whitespace from all albums. """
-        for artist in os.listdir(root):
-            if not os.path.isdir(os.path.join(root, artist)):
-                continue
-            for album in os.listdir(os.path.join(root, artist)):
-                if not os.path.isdir(os.path.join(root, artist, album)):
-                    continue
-                NameNormalizer.stripWhitespace(root, artist, album)
-
-    @staticmethod
-    def stripArtistFromAlbum(root):
+    def stripArtist(root):
         """
         Strip artist name from album name.
         Some name have this format Steve Roach - Early Man.

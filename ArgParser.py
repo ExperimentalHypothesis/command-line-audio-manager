@@ -1,6 +1,7 @@
 import argparse
-# import NameNormalizer
+
 from NameNormalizerArtist import ArtistNameNormalizer
+from NameNormalizerAlbum import AlbumNameNormalizer
 
 class ArgParser:
     """ Class responsible for parsing command line args. """
@@ -19,13 +20,13 @@ class ArgParser:
         parser.add_argument("-artc",    "--titlecaseartist", help="titlecase artist", action="store_true")
 
         # renaming albums
-        parser.add_argument("-alcl",    "--cleartokenfromalbum", action="store_true")
-        parser.add_argument("-alrgx",   "--clearregexfromalbum", action="store_true")
-        parser.add_argument("-alws",    "--clearwhitespacefromalbum", action="store_true")
-        parser.add_argument("-altc",    "--titlecasealbum", action="store_true")
-        parser.add_argument("-allc",    "--lowercasealbum", action="store_true")
-        parser.add_argument("-aluc",    "--uppercasealbum", action="store_true")
-        parser.add_argument("-alclar",  "--clearartistfromalbum", action="store_true")   # use after moving to folders
+        parser.add_argument("-alcl",    "--cleartokenfromalbum", help="remove letter/word from album, has to be used with -T flag where you specify the token", action="store_true")
+        parser.add_argument("-alrgx",   "--clearregexfromalbum", help="remove regex expression from album, has to be used with -X flag where you specify the regex", action="store_true")
+        parser.add_argument("-alws",    "--clearwhitespacefromalbum", help="remove extra whitespace from album", action="store_true")
+        parser.add_argument("-altc",    "--titlecasealbum",  help="titlecase album", action="store_true")
+        parser.add_argument("-allc",    "--lowercasealbum", help="lowercase album", action="store_true")
+        parser.add_argument("-aluc",    "--uppercasealbum", help="uppercase album", action="store_true")
+        parser.add_argument("-alclar",  "--clearartistfromalbum", action="store_true")   # !!! use after moving to folders
 
         # renaming songs
         parser.add_argument("-sorn",    "--cleartokenfromsong", action="store_true")
@@ -61,8 +62,21 @@ class ArgParser:
             ArtistNameNormalizer.titlecase(args.root)
 
         # renaming albums
-        # elif args
-        #
+        elif args.cleartokenfromalbum:
+            AlbumNameNormalizer.stripToken(args.token, args.root)
+        elif args.clearregexfromalbum:
+            AlbumNameNormalizer.stripReg(args.regex, args.root)
+        elif args.clearwhitespacefromalbum:
+            AlbumNameNormalizer.stripWhitespace(args.root)
+        elif args.titlecasealbum:
+            AlbumNameNormalizer.titlecase(args.root)
+        elif args.lowercasealbum:
+            AlbumNameNormalizer.lowercase(args.root)
+        elif args.uppercasealbum:
+            AlbumNameNormalizer.uppercase(args.root)
+        elif args.clearartistfromalbum:
+            AlbumNameNormalizer.stripArtist(args.root)
+
         #
         # elif args.striptokenfromalbum:
         #     NameNormalizer.NameNormalizer.stripTokenFromAlbumName(args.token, args.root)

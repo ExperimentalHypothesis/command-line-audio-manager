@@ -2,6 +2,8 @@ import argparse
 
 from NameNormalizerArtist import ArtistNameNormalizer
 from NameNormalizerAlbum import AlbumNameNormalizer
+from NameNormalizerSong import SongNameNormalizer
+
 
 class ArgParser:
     """ Class responsible for parsing command line args. """
@@ -47,7 +49,7 @@ class ArgParser:
         """ Run function based on CLI arguments input. """
         args = ArgParser._parseArgs()
 
-        # renaming artists
+        # renaming artist
         if args.cleartokenfromartist:
             ArtistNameNormalizer.stripToken(args.token, args.root)
         elif args.clearregexfromartist:
@@ -77,44 +79,17 @@ class ArgParser:
         elif args.clearartistfromalbum:
             AlbumNameNormalizer.stripArtist(args.root)
 
-        #
-        # elif args.striptokenfromalbum:
-        #     NameNormalizer.NameNormalizer.stripTokenFromAlbumName(args.token, args.root)
-        # elif args.striptokenfromsong:
-        #     NameNormalizer.NameNormalizer.stripTokenFromSongName(args.token, args.root)
-        # elif args.stripregexfromartist:
-        #     NameNormalizer.NameNormalizer.stripRegFromArtistName(args.token, args.root)
-        # elif args.stripregexfromalbum:
-        #     NameNormalizer.NameNormalizer.stripRegFromAlbumName(args.token, args.root)
-        # elif args.stripregexfromsong:
-        #     NameNormalizer.NameNormalizer.stripRegFromSongName(args.token, args.root)
-        # elif args.lowercaseartist:
-        #     NameNormalizer.NameNormalizer.lowercaseArtist(args.root)
-        # elif args.lowercasealbum:
-        #     NameNormalizer.NameNormalizer.lowercaseAlbum(args.root)
-        # # elif args.lowercasesong:
-        # #     NameNormalizer.NameNormalizer.lowercaseSong()
-        # elif args.uppercaseartist:
-        #     NameNormalizer.NameNormalizer.uppercaseArtist(args.root)
-        # elif args.uppercasealbum:
-        #     NameNormalizer.NameNormalizer.uppercaseAlbum(args.root)
-        # # elif args.uppercasesong:
-        # #     NameNormalizer.NameNormalizer.uppercaseSong()
-        # elif args.titlecaseartist:
-        #     NameNormalizer.NameNormalizer.titlecaseArtist(args.root)
-        # elif args.titlecasealbum:
-        #     NameNormalizer.NameNormalizer.titlecaseAlbum(args.root)
-        # # elif args.titlecasesong:
-        # #     NameNormalizer.NameNormalizer.titlecaseSong(args.root)
-        # elif args.stripwhitespacefromartist:
-        #     NameNormalizer.NameNormalizer.stripWhitespaceFromArtist(args.root)
-        # elif args.stripwhitespacefromalbum:
-        #     NameNormalizer.NameNormalizer.stripWhitespaceFromAlbum(args.root)
-        # elif args.stripartist:
-        #     NameNormalizer.NameNormalizer.stripArtistFromAlbum(args.root)
+        # renaming songs
+        elif args.cleartokenfromsong:
+            SongNameNormalizer.stripToken(args.token, args.root)
+        elif args.clearregexfromsong:
+            SongNameNormalizer.stripToken(args.token, args.root)
+        elif args.stripwhitespacefromsong:
+            SongNameNormalizer.stripWhitespace(args.root)
+        elif args.lowercasesong:
+            SongNameNormalizer.lowercase(args.root)
+        elif args.uppercasesong:
+            SongNameNormalizer.uppercase(args.root)
+        elif args.titlecasesong:
+            SongNameNormalizer.titlecase(args.root)
 
-#
-#
-# if __name__ == "__main__":
-#     print("hello")
-#     ArgParser.runCommands()

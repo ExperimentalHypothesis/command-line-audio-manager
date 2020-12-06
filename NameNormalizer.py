@@ -85,9 +85,3 @@ class NameNormalizer:
 
 
 
-
-
-
-if __name__ == "__main__":
-    root = r"C:\Users\lukas.kotatko\OneDrive - EP Commodities, a.s\Plocha\testing folder"
-    NameNormalizer.stripArtistFromAlbum(root)

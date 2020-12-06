@@ -7,21 +7,21 @@ class SongNameNormalizer(NameNormalizer):
     """ Class handling everything concerning song renaming. """
 
     @staticmethod
-    def stripTokenFromSongName(token, root) -> None:
+    def stripToken(token, root) -> None:
         """ Deletes a specified token or string from all songs names """
         for path, dirs, folders in os.walk(root):
             for file in folders:
                 NameNormalizer.stripToken(token, path, file)
 
     @staticmethod
-    def stripRegFromSongName(regex, root) -> None:
+    def stripReg(regex, root) -> None:
         """ Deletes string that matches regex expression form song name. """
         for path, dirs, folders in os.walk(root):
             for file in folders:
                 NameNormalizer.stripReg(regex, path, file)
 
     @staticmethod
-    def lowercaseSong(root) -> None:
+    def lowercase(root) -> None:
         """ Make song name lowercase. """
         for artist in os.listdir(root):
             if not os.path.isdir(os.path.join(root, artist)):
@@ -31,7 +31,7 @@ class SongNameNormalizer(NameNormalizer):
                     if song != song.lower():
                         NameNormalizer.lowercase(root, artist, album, song)
 
-    def uppercaseSong(root) -> None:
+    def uppercase(root) -> None:
         """ Make song name uppercase. """
         for artist in os.listdir(root):
             if not os.path.isdir(os.path.join(root, artist)):
@@ -41,7 +41,7 @@ class SongNameNormalizer(NameNormalizer):
                     if song != song.upper():
                         NameNormalizer.uppercase(root, artist, album, song)
 
-    def titleSong(root) -> None:
+    def title(root) -> None:
         """ Make song name uppercase. """
         for artist in os.listdir(root):
             if not os.path.isdir(os.path.join(root, artist)):

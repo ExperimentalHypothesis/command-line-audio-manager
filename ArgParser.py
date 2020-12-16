@@ -3,7 +3,7 @@ import argparse
 from NameNormalizerArtist import ArtistNameNormalizer
 from NameNormalizerAlbum import AlbumNameNormalizer
 from NameNormalizerSong import SongNameNormalizer
-
+from NameChecker import NameChecker
 
 class ArgParser:
     """ Class responsible for parsing command line args. """
@@ -37,6 +37,15 @@ class ArgParser:
         parser.add_argument("-solc",    "--lowercasesong", action="store_true")
         parser.add_argument("-souc",    "--uppercasesong", action="store_true")
         parser.add_argument("-sotc",    "--titlecasesong", action="store_true")
+
+        # listing artists, albums, songs
+        parser.add_argument("-arls",    "--listartists", help="prints out artist folder to terminal, it prints out all files and folders what are in first level", action="store_true")
+        parser.add_argument("-alls",    "--listalbums", help="prints out albums folder to terminal, it prints out all files and folders what are in second level", action="store_true")
+        parser.add_argument("-sols",    "--listsongs", help="prints out songs folder to terminal, it prints out all files what are in third level", action="store_true")
+
+
+
+
 
         # general setters
         parser.add_argument("-R", "--root", type=str, required=True)
@@ -93,3 +102,10 @@ class ArgParser:
         elif args.titlecasesong:
             SongNameNormalizer.titlecase(args.root)
 
+        # listing artists, albums, songs
+        elif args.listartists:
+            NameChecker.listAllArtist(args.root)
+        elif args.listalbums:
+            NameChecker.listAllAlbums(args.root)
+        elif args.listsongs:
+            NameChecker.listAllSongs(args.root)

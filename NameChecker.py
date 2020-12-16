@@ -19,30 +19,35 @@ class NameChecker:
     def listAllArtist(root):
         """ Print all Artist folders to the console. """
         for artist in os.listdir(root):
-            print(artist)
+            if os.path.isdir(os.path.join(root, artist)):
+                print(artist)
+            else:
+                print(colored(artist, "red"))
 
     @staticmethod
     def listAllAlbums(root):
-        """ Print all Albums folders to the console. """
+        """ Print all Albums folders to the console. Albums should be at second level, if at this level is file, it will be printed in red. """
         for artist in os.listdir(root):
             for album in os.listdir(os.path.join(root, artist)):
-                print(album)
+                if os.path.isdir(os.path.join(root, artist, album)):
+                    print(album)
+                else:
+                    print(colored(album, "red"))
 
     @staticmethod
     def listAllSongs(root):
-        """ Print all Albums folders to the console. """
+        """ Print all Songs to the console. Songs should be at third level, if at this level is album (directory), it will be printed in red. """
         for artist in os.listdir(root):
             for album in os.listdir(os.path.join(root, artist)):
                 if not os.path.isdir(os.path.join(root, artist, album)):
                     continue
                 for song in os.listdir(os.path.join(root, artist, album)):
-                    print(song)
-
-    @staticmethod
-    def prr():
-        print(colored('hello', 'red'), colored('world', 'green'))
-
+                    if os.path.isdir(os.path.join(root, artist, album, song)):
+                        print(colored(song, "red"))
+                    else:
+                        print(song)
 
 
 if __name__ == "__main__":
-    NameChecker.prr()
+    root = r"E:\__ATMA__TEST"
+    NameChecker.listAllArtist(root)

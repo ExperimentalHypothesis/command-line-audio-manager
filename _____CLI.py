@@ -246,6 +246,7 @@ class NameNormalizer(DataProvider):
     #                     shutil.rmtree(src_name)
 
 
+
     def strip_apimatch_from_albumname(self) -> None:
         """ strip [api match 131243] from album folder """
         for artist in os.listdir(self.root):

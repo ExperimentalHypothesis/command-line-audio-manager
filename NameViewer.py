@@ -4,8 +4,8 @@ from termcolor import colored
 from colorama import init
 init()  # to make coloring works on windows
 
-## THIS CLASS IS USED AS THIRD
-class NameChecker:
+## THIS CLASS IS USED AS FOR CHECKING ONLY
+class NameViewer:
     """ Class validating Artist, Albums and Song names.
         At this point, the form of Artist name should be plain Artist Name (eg. Steve Roach)
         At this point, the form of Album should be:
@@ -55,4 +55,4 @@ class NameChecker:
 
 if __name__ == "__main__":
     root = r"E:\__ATMA__TEST"
-    NameChecker.listAllArtist(root)
+    NameViewer.listAllArtist(root)

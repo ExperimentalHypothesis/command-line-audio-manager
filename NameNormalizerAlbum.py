@@ -82,7 +82,6 @@ class AlbumNameNormalizer(NameNormalizer):
         Some name have this format Steve Roach - Early Man.
         This Function has to make it so that Steve Roach - Early Man becomes Early Man
         """
-
         for artist in os.listdir(root):
             for album in os.listdir(os.path.join(root, artist)):
                 if artist in album:

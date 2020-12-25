@@ -3,7 +3,8 @@ import argparse
 from NameNormalizerArtist import ArtistNameNormalizer
 from NameNormalizerAlbum import AlbumNameNormalizer
 from NameNormalizerSong import SongNameNormalizer
-from NameChecker import NameChecker
+from NameViewer import NameViewer
+from NameCheckerSong import SongNameChecker
 
 class ArgParser:
     """ Class responsible for parsing command line args. """
@@ -43,8 +44,9 @@ class ArgParser:
         parser.add_argument("-alls",    "--listalbums", help="prints out albums folder to terminal, it prints out all files and folders what are in second level", action="store_true")
         parser.add_argument("-sols",    "--listsongs", help="prints out songs folder to terminal, it prints out all files what are in third level", action="store_true")
 
-
-
+        # checking songs naming convention
+        parser.add_argument("-shal",     "--showalbums", help="all albums that have songs with proper naming convention [01 Artist -- Album -- Song.ext] will printed green", action="store_true" )
+        parser.add_argument("-mval",     "--movealbums", help="all albums that have songs with proper naming convention [01 Artist -- Album -- Song.ext] will moved to special folder", action="store_true" )
 
 
         # general setters
@@ -104,8 +106,15 @@ class ArgParser:
 
         # listing artists, albums, songs
         elif args.listartists:
-            NameChecker.listAllArtist(args.root)
+            NameViewer.listAllArtist(args.root)
         elif args.listalbums:
-            NameChecker.listAllAlbums(args.root)
+            NameViewer.listAllAlbums(args.root)
         elif args.listsongs:
-            NameChecker.listAllSongs(args.root)
+            NameViewer.listAllSongs(args.root)
+
+        # check song names in album and move them
+        elif args.showalbums:
+            SongNameChecker.showAlbumsWithProperSongNames(args.root)
+        elif args.movealbums:
+            SongNameChecker.moveAlbumsWithProperSongNames(args.root)
+

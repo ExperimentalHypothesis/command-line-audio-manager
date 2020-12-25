@@ -85,8 +85,8 @@ class AlbumNameNormalizer(NameNormalizer):
 
         for artist in os.listdir(root):
             for album in os.listdir(os.path.join(root, artist)):
-                if artist in album and " - " in album:
+                if artist in album:
                     src = os.path.join(root, artist, album)
-                    dst = os.path.join(root, artist, album.replace(artist + " - ", ""))
-                    print("striping artist from " + album + " -> " + album.replace(artist + " - ", ""))
+                    dst = os.path.join(root, artist, album.replace(artist, ""))
+                    print("striping artist from " + album + " -> " + album.replace(artist, ""))
                     os.rename(src, dst)

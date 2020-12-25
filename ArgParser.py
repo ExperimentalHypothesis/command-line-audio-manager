@@ -31,9 +31,9 @@ class ArgParser:
         parser.add_argument("-alclar",  "--clearartistfromalbum", action="store_true")   # !!! use after moving to folders
 
         # renaming songs
-        parser.add_argument("-sorn",    "--cleartokenfromsong", action="store_true")
+        parser.add_argument("-socl",    "--cleartokenfromsong", action="store_true")
         parser.add_argument("-sorgx",   "--clearregexfromsong", action="store_true")
-        parser.add_argument("-sosw",    "--stripwhitespacefromsong", action="store_true")
+        parser.add_argument("-sows",    "--stripwhitespacefromsong", action="store_true")
         parser.add_argument("-solc",    "--lowercasesong", action="store_true")
         parser.add_argument("-souc",    "--uppercasesong", action="store_true")
         parser.add_argument("-sotc",    "--titlecasesong", action="store_true")

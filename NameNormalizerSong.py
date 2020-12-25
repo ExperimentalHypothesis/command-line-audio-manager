@@ -27,26 +27,51 @@ class SongNameNormalizer(NameNormalizer):
             if not os.path.isdir(os.path.join(root, artist)):
                 continue
             for album in os.listdir(os.path.join(root, artist)):
+                if not os.path.isdir(os.path.join(root, artist, album)):
+                    continue
                 for song in os.listdir(os.path.join(root, artist, album)):
                     if song != song.lower():
                         NameNormalizer.lowercase(root, artist, album, song)
 
+    @staticmethod
     def uppercase(root) -> None:
         """ Make song name uppercase. """
         for artist in os.listdir(root):
             if not os.path.isdir(os.path.join(root, artist)):
                 continue
             for album in os.listdir(os.path.join(root, artist)):
+                if not os.path.isdir(os.path.join(root, artist, album)):
+                    continue
                 for song in os.listdir(os.path.join(root, artist, album)):
                     if song != song.upper():
                         NameNormalizer.uppercase(root, artist, album, song)
 
-    def title(root) -> None:
-        """ Make song name uppercase. """
+    @staticmethod
+    def titlecase(root) -> None:
+        """ Make song name titlecase. """
         for artist in os.listdir(root):
             if not os.path.isdir(os.path.join(root, artist)):
                 continue
             for album in os.listdir(os.path.join(root, artist)):
+                if not os.path.isdir(os.path.join(root, artist, album)):
+                    continue
                 for song in os.listdir(os.path.join(root, artist, album)):
-                    if song != song.title():
-                        NameNormalizer.titlecase(root, artist, album, song)
+                    song_name, ext = os.path.splitext(os.path.join(root, artist, album, song))
+                    if song != os.path.basename(song_name.title() + ext):
+                        src_name = os.path.join(root, artist, album, song)
+                        dst_name = os.path.join(root, artist, album, song_name.title() + ext)
+                        print(f"Titlecasing from {src_name} -> {dst_name}")
+                        os.rename(src_name, dst_name)
+
+    @staticmethod
+    def stripWhitespace(root):
+        """ Strips additional (multiple) whitespace from all albums. """
+        for artist in os.listdir(root):
+            if not os.path.isdir(os.path.join(root, artist)):
+                continue
+            for album in os.listdir(os.path.join(root, artist)):
+                if not os.path.isdir(os.path.join(root, artist, album)):
+                    continue
+                for song in os.listdir(os.path.join(root, artist, album)):
+                    NameNormalizer.stripWhitespace(root, artist, album, song)
+

@@ -1,3 +1,4 @@
+import subprocess
 import os, re
 from termcolor import colored
 from colorama import init
@@ -54,21 +55,99 @@ class NameViewer:
                         print(song)
 
     @staticmethod
-    def listAllSongsWithArtistName(root):
-        """ Prints all Songs that contain artist name in a different color. """
+    def listAlbumsWithArtistName(root):
+        """ Prints all Albums that contain Artist name in a different color. """
         for artist in os.listdir(root):
             if not os.path.isdir(os.path.join(root, artist)):
                 continue
             for album in os.listdir(os.path.join(root, artist)):
                 if not os.path.isdir(os.path.join(root, artist, album)):
                     continue
-                for song in os.listdir(os.path.join(root, artist, album)):
-                    if artist in song:
-                        print(colored(song, "red"))
-                    else:
-                        print(song)
+                if artist in album:
+                    print(colored(os.path.join(artist, album) + "\t<--- ALBUM CONTAINS ARTIST NAME", "red"))
+                else:
+                    print(os.path.join(artist, album))
+
+    @staticmethod
+    def listAlbumsWhoseAllSongsContainArtistName(root):
+        """ Prints all Songs that contain Artist name in a different color. """
+        for artist in os.listdir(root):
+            if not os.path.isdir(os.path.join(root, artist)):
+                continue
+            for album in os.listdir(os.path.join(root, artist)):
+                if not os.path.isdir(os.path.join(root, artist, album)):
+                    continue
+                if all(artist in song for song in os.listdir(os.path.join(root, artist, album))):
+                    print(colored(os.path.join(artist, album) + "\t<--- ALL SONGS CONTAIN ARTIST NAME", "red"))
+                    for song in os.listdir(os.path.join(root, artist, album)):
+                        print("\t" + colored(os.path.join(artist, song), "red"))
+                else:
+                    print(os.path.join(artist, album))
+
+    @staticmethod
+    def listAlbumsWhoseAllSongsContainAlbumName(root):
+        """ Prints all Albums that have songs containing Album name in each song title. """
+        for artist in os.listdir(root):
+            if not os.path.isdir(os.path.join(root, artist)):
+                continue
+            for album in os.listdir(os.path.join(root, artist)):
+                if not os.path.isdir(os.path.join(root, artist, album)):
+                    continue
+                if all(album in song for song in os.listdir(os.path.join(root, artist, album))):
+                    print(colored(os.path.join(artist, album) + "\t<--- ALL SONGS CONTAIN ALBUM NAME", "red"))
+                    for song in os.listdir(os.path.join(root, artist, album)):
+                        print("\t" + colored(os.path.join(artist, song), "red"))
+                else:
+                    print(os.path.join(artist, album))
+
+    @staticmethod
+    def listAlbumsWithSongsMatchingBroadcastRegex(root) -> set:
+        """ If albums have all songs with proper naming convention, they are printed green.
+        They are ready to be moved out as DONE.
+
+        Broadcast naming convention: 01 artist name -- album name -- song name.ext
+        """
+
+        for artist in os.listdir(os.path.join(root)):
+            if not os.path.isdir(os.path.join(root, artist)):
+                continue
+            for album in os.listdir(os.path.join(root, artist)):
+                if not os.path.isdir(os.path.join(root, artist, album)):
+                    continue
+                if all(SongNameChecker.broadcastRegexPattern.match(song) for song in os.listdir(os.path.join(root, artist, album))):
+                    print(colored(os.path.join(root, artist, album), "green"))
+                else:
+                    print(os.path.join(root, artist, album))
+
+    @staticmethod
+    def listAlbumsWithSongsMatchingBasicRegex(root):
+        """ If albums have all songs with basic naming convention, they are printed green.
+        They are ready to be renamed to broadcast naming convention.
+
+        Basic naming convention: 01 song name.ext
+        Broadcast naming convention: 01 artist name -- album name -- song name.ext
+        """
+
+        for artist in os.listdir(os.path.join(root)):
+            if not os.path.isdir(os.path.join(root, artist)):
+                continue
+            for album in os.listdir(os.path.join(root, artist)):
+                if not os.path.isdir(os.path.join(root, artist, album)):
+                    continue
+                if all(SongNameChecker.basicRegexPattern.match(song) for song in
+                       os.listdir(os.path.join(root, artist, album))):
+                    print(colored(os.path.join(root, artist, album), "green"))
+                else:
+                    print(os.path.join(root, artist, album) + " <--- NOT MATCHING BASIC REGEX")
+                    for song in os.listdir(os.path.join(root, artist, album)):
+                        print(f"\t {song}")
+
+
+
 
 
 if __name__ == "__main__":
-    # root = r"E:\__ATMA__TEST"
-    NameViewer.listAllSongsWithArtistName(root)
+    root = r"C:\Users\lukas.kotatko\__Atma__Test"
+    NameViewer.listAlbumsWhoseAllSongsContainArtistName(root)
+    NameViewer.listAlbumsWhoseAllSongsContainAlbumName(root)
+    NameViewer.listAlbumsWithArtistName(root)

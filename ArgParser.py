@@ -4,8 +4,9 @@ from NameNormalizerArtist import ArtistNameNormalizer
 from NameNormalizerAlbum import AlbumNameNormalizer
 from NameNormalizerSong import SongNameNormalizer
 from NameViewer import NameViewer
-from NameCheckerSong import SongNameChecker
-from Deleter import Deleter
+from FilesMover import Mover
+from FilesDeleter import Deleter
+
 
 class ArgParser:
     """ Class responsible for parsing command line args. """
@@ -40,19 +41,23 @@ class ArgParser:
         parser.add_argument("-souc",    "--uppercasesong", action="store_true")
         parser.add_argument("-sotc",    "--titlecasesong", action="store_true")
 
-        # listing artists, albums, songs
+        # listing artists, albums, songs, checking naming conventions, marking them in color. this is for quick visual reference about current state
         parser.add_argument("-arls",    "--listartists", help="prints out artist folder to terminal, it prints out all files and folders what are in first level", action="store_true")
         parser.add_argument("-alls",    "--listalbums", help="prints out albums folder to terminal, it prints out all files and folders what are in second level", action="store_true")
         parser.add_argument("-sols",    "--listsongs", help="prints out songs folder to terminal, it prints out all files what are in third level", action="store_true")
+        parser.add_argument("-aals",    "--listalbumswithartistname", help="albums that have artist name as part of its name will be printed in red", action="store_true")
+        parser.add_argument("-alarls",  "--listalbumswithartistnameinallsongs", help="albums that have all songs which contain artist name are printed in red", action="store_true")
+        parser.add_argument("-alalls",  "--listalbumswithalbumnameinallsongs", help="albums that have all songs which contain albums name are printed in red", action="store_true")
+        parser.add_argument("-bargxls", "--listalbumsmatchbasicregex", help="all albums that have songs with proper naming convention [01 song name.ext] will printed green. These are ready to be renamed to broadcast.", action="store_true" )
+        parser.add_argument("-brogxls", "--listalbumsmatchbroadcastregex", help="all albums that have songs with proper naming convention [01 artist name -- album name -- song name.ext] will printed green. These are ready to be moved away.", action="store_true" )
 
-        # checking songs naming convention
-        parser.add_argument("-shal",     "--showalbums", help="all albums that have songs with proper naming convention [01 Artist -- Album -- Song.ext] will printed green", action="store_true" )
+        # moving files
         parser.add_argument("-mval",     "--movealbums", help="all albums that have songs with proper naming convention [01 Artist -- Album -- Song.ext] will moved to special folder", action="store_true" )
 
-        # deleting
+        # deleting files from filesystem
         parser.add_argument("-deem",    "--deleteempty", help="deletes all folder where no files are left", action="store_true")
-        parser.add_argument("-dewa"     "--deletewithoutaudio", help="delete folder without audio", action="store_true")
-        parser.add_argument("-dena"     "--deletenonaudio", help="delete non audio files", action="store_true")
+        parser.add_argument("-dewa",    "--deletewithoutaudio", help="delete folder without audio", action="store_true")
+        parser.add_argument("-dena",    "--deletenonaudio", help="delete non audio files", action="store_true")
 
 
 
@@ -68,69 +73,48 @@ class ArgParser:
         args = ArgParser._parseArgs()
 
         # renaming artist
-        if args.cleartokenfromartist:
-            ArtistNameNormalizer.stripToken(args.token, args.root)
-        elif args.clearregexfromartist:
-            ArtistNameNormalizer.stripReg(args.regex, args.root)
-        elif args.clearwhitespacefromartist:
-            ArtistNameNormalizer.stripWhitespace(args.root)
-        elif args.lowercaseartist:
-            ArtistNameNormalizer.lowercase(args.root)
-        elif args.uppercaseartist:
-            ArtistNameNormalizer.uppercase(args.root)
-        elif args.titlecaseartist:
-            ArtistNameNormalizer.titlecase(args.root)
+        if args.cleartokenfromartist: ArtistNameNormalizer.stripToken(args.token, args.root)
+        elif args.clearregexfromartist: ArtistNameNormalizer.stripReg(args.regex, args.root)
+        elif args.clearwhitespacefromartist: ArtistNameNormalizer.stripWhitespace(args.root)
+        elif args.lowercaseartist: ArtistNameNormalizer.lowercase(args.root)
+        elif args.uppercaseartist: ArtistNameNormalizer.uppercase(args.root)
+        elif args.titlecaseartist: ArtistNameNormalizer.titlecase(args.root)
 
         # renaming albums
-        elif args.cleartokenfromalbum:
-            AlbumNameNormalizer.stripToken(args.token, args.root)
-        elif args.clearregexfromalbum:
-            AlbumNameNormalizer.stripReg(args.regex, args.root)
-        elif args.clearwhitespacefromalbum:
-            AlbumNameNormalizer.stripWhitespace(args.root)
-        elif args.titlecasealbum:
-            AlbumNameNormalizer.titlecase(args.root)
-        elif args.lowercasealbum:
-            AlbumNameNormalizer.lowercase(args.root)
-        elif args.uppercasealbum:
-            AlbumNameNormalizer.uppercase(args.root)
-        elif args.clearartistfromalbum:
-            AlbumNameNormalizer.stripArtist(args.root)
+        elif args.cleartokenfromalbum: AlbumNameNormalizer.stripToken(args.token, args.root)
+        elif args.clearregexfromalbum: AlbumNameNormalizer.stripReg(args.regex, args.root)
+        elif args.clearwhitespacefromalbum: AlbumNameNormalizer.stripWhitespace(args.root)
+        elif args.titlecasealbum: AlbumNameNormalizer.titlecase(args.root)
+        elif args.lowercasealbum: AlbumNameNormalizer.lowercase(args.root)
+        elif args.uppercasealbum: AlbumNameNormalizer.uppercase(args.root)
+        elif args.clearartistfromalbum: AlbumNameNormalizer.stripArtist(args.root)
 
         # renaming songs
-        elif args.cleartokenfromsong:
-            SongNameNormalizer.stripToken(args.token, args.root)
-        elif args.clearregexfromsong:
-            SongNameNormalizer.stripToken(args.token, args.root)
-        elif args.stripwhitespacefromsong:
-            SongNameNormalizer.stripWhitespace(args.root)
-        elif args.lowercasesong:
-            SongNameNormalizer.lowercase(args.root)
-        elif args.uppercasesong:
-            SongNameNormalizer.uppercase(args.root)
-        elif args.titlecasesong:
-            SongNameNormalizer.titlecase(args.root)
+        elif args.cleartokenfromsong: SongNameNormalizer.stripToken(args.token, args.root)
+        elif args.clearregexfromsong: SongNameNormalizer.stripToken(args.token, args.root)
+        elif args.stripwhitespacefromsong: SongNameNormalizer.stripWhitespace(args.root)
+        elif args.lowercasesong: SongNameNormalizer.lowercase(args.root)
+        elif args.uppercasesong: SongNameNormalizer.uppercase(args.root)
+        elif args.titlecasesong: SongNameNormalizer.titlecase(args.root)
 
-        # listing artists, albums, songs
-        elif args.listartists:
-            NameViewer.listAllArtist(args.root)
-        elif args.listalbums:
-            NameViewer.listAllAlbums(args.root)
-        elif args.listsongs:
-            NameViewer.listAllSongs(args.root)
+        # listing artists, albums, songs, checking naming conventions, marking them in color. this is for quick visual reference about current state
+        elif args.listartists: NameViewer.listAllArtist(args.root)
+        elif args.listalbums: NameViewer.listAllAlbums(args.root)
+        elif args.listsongs: NameViewer.listAllSongs(args.root)
+        elif args.listalbumswithartistname: NameViewer.listAlbumsWithArtistName(args.root)
+        elif args.listalbumswithartistnameinallsongs: NameViewer.listAlbumsWhoseAllSongsContainArtistName(args.root)
+        elif args.listalbumswithalbumnameinallsongs: NameViewer.listAlbumsWhoseAllSongsContainAlbumName(args.root)
+        elif args.listalbumsmatchbasicregex: NameViewer.listAlbumsWithSongsMatchingBasicRegex(args.root)
+        elif args.listalbumsmatchbroadcastregex: NameViewer.listAlbumsWithSongsMatchingBroadcastRegex(args.root)
 
-        # check song names in album and move them
-        elif args.showalbums:
-            SongNameChecker.showAlbumsWithProperSongNames(args.root)
-        elif args.movealbums:
-            SongNameChecker.moveAlbumsWithProperSongNames(args.root)
+        # moving files
+        elif args.movealbums: Mover.moveAlbumsWithProperSongNames(args.root)
+
+
 
         # deleting some data
-        elif args.deleteempty:
-            Deleter.deleteEmptyFolders(args.root)
-        elif args.deletewithoutaudio:
-            Deleter.deleteFoldersWithoutAudio(args.root)
-        elif args.deletenonaudio:
-            Deleter.deleteNonAudioFiles(args.root)
+        elif args.deleteempty: Deleter.deleteEmptyFolders(args.root)
+        elif args.deletewithoutaudio: Deleter.deleteFoldersWithoutAudio(args.root)
+        elif args.deletenonaudio: Deleter.deleteNonAudioFiles(args.root)
 
 

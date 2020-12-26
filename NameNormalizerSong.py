@@ -75,3 +75,33 @@ class SongNameNormalizer(NameNormalizer):
                 for song in os.listdir(os.path.join(root, artist, album)):
                     NameNormalizer.stripWhitespace(root, artist, album, song)
 
+    @staticmethod
+    def stripArtistNameFromSong(root):
+        """ Removes artist name from song name in albums where ALL songs contain artist name. """
+        for artist in os.listdir(root):
+            if not os.path.isdir(os.path.join(root, artist)):
+                continue
+            for album in os.listdir(os.path.join(root, artist)):
+                if not os.path.isdir(os.path.join(root, artist, album)):
+                    continue
+                NameNormalizer.stripStringFromAlbumsSong(artist, root, artist, album)
+
+    @staticmethod
+    def stripAlbumNameFromSong(root):
+        """ Removes artist name from song name in albums where ALL songs contain artist name. """
+        for artist in os.listdir(root):
+            if not os.path.isdir(os.path.join(root, artist)):
+                continue
+            for album in os.listdir(os.path.join(root, artist)):
+                if not os.path.isdir(os.path.join(root, artist, album)):
+                    continue
+                NameNormalizer.stripStringFromAlbumsSong(album, root, artist, album)
+
+
+
+
+
+if __name__ == "__main__":
+    root = r"C:\Users\lukas.kotatko\__Atma__Test"
+
+    SongNameNormalizer.stripAlbumNameFromSong(root)

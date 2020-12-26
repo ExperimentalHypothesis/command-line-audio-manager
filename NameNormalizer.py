@@ -82,6 +82,14 @@ class NameNormalizer:
                 print("removing duplicates")
                 shutil.rmtree(src)
 
-
+    @staticmethod
+    def stripStringFromAlbumsSong(s: str, *args):
+        """ Strip string (Album name or Artist name) from song of an album. It happens only if all the songs contain that name. """
+        if all(s in song for song in os.listdir(os.path.join(*args))):
+            for song in os.listdir(os.path.join(*args)):
+                src = os.path.join(*args, song)
+                dst = os.path.join(*args, song.replace(s, ""))
+                print(f"Stripping {s} from {src} -> {dst}")
+                os.rename(src, dst)
 
 

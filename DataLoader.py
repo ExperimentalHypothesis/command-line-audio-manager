@@ -9,4 +9,5 @@ class DataLoader:
                        '.msv', '.nmf', '.nsf', '.ogg', '.oga', '.mogg', '.opus', '.ra', '.rm', '.raw', '.sln', '.tta', '.voc', '.vox',
                        '.wav', '.wma', '.wv', '.webm', '.8svx']
 
-    broadcastRegexPattern = re.compile(r"(^\d\d)(\s)([\w+\s().,:#=\-`&'?!\[\]]*)(\s)(--)(\s)([\w+\s().,:#=\-`&'?!\[\]]*)(\s)(--)(\s)([\w+\s().,:#=\-`&'?!\[\]]*)$")
+    basicRegexPattern = re.compile(r"(^\d\d)(\s)([\w+\s().,:#=\-`&;'?!\[\]]*)$")
+    broadcastRegexPattern = re.compile(r"(^\d\d)(\s)([\w+\s().,:#=\-`&;'?!\[\]]*)(\s)(--)(\s)([\w+\s().,:#=\-`&;'?!\[\]]*)(\s)(--)(\s)([\w+\s().,:#=\-`&;'?!\[\]]*)$")

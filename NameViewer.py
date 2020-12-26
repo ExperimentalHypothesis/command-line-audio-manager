@@ -1,8 +1,9 @@
-
 import os, re
 from termcolor import colored
 from colorama import init
+
 init()  # to make coloring works on windows
+
 
 ## THIS CLASS IS USED AS FOR CHECKING ONLY
 class NameViewer:
@@ -52,7 +53,22 @@ class NameViewer:
                     else:
                         print(song)
 
+    @staticmethod
+    def listAllSongsWithArtistName(root):
+        """ Prints all Songs that contain artist name in a different color. """
+        for artist in os.listdir(root):
+            if not os.path.isdir(os.path.join(root, artist)):
+                continue
+            for album in os.listdir(os.path.join(root, artist)):
+                if not os.path.isdir(os.path.join(root, artist, album)):
+                    continue
+                for song in os.listdir(os.path.join(root, artist, album)):
+                    if artist in song:
+                        print(colored(song, "red"))
+                    else:
+                        print(song)
+
 
 if __name__ == "__main__":
-    root = r"E:\__ATMA__TEST"
-    NameViewer.listAllArtist(root)
+    # root = r"E:\__ATMA__TEST"
+    NameViewer.listAllSongsWithArtistName(root)

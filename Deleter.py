@@ -1,7 +1,8 @@
 import os
+from DataLoader import DataLoader
 
 
-class Deleter:
+class Deleter(DataLoader):
     """ Class responsible for deleting files and folders. """
 
     @staticmethod
@@ -17,8 +18,17 @@ class Deleter:
                 print(f"Removing empty dir {os.path.join(root, folder)}")
                 os.rmdir(os.path.join(root, folder))
 
+    @staticmethod
+    def deleteNonAudioFiles(root):
+        """ Prints all Songs that contain artist name in a different color. """
+        for paths, dirs, folders in os.walk(root):
+            for file in folders:
+                if not file.endswith(tuple(Deleter.audioExtensions)):
+                    print(f"removing {os.path.join(paths, file)}")
+                    os.remove(os.path.join(paths, file))
+
 
 if __name__ == "__main__":
-    root = r"C:\Users\lukas.kotatko\Music"
+    root = r"E:\__ATMA__TEST"
 
-    Deleter.deleteEmptyFolders(root)
+    Deleter.deleteNonAudioFiles(root)

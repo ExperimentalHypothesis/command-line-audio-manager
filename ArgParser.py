@@ -110,8 +110,6 @@ class ArgParser:
         # moving files
         elif args.movealbums: Mover.moveAlbumsWithProperSongNames(args.root)
 
-
-
         # deleting some data
         elif args.deleteempty: Deleter.deleteEmptyFolders(args.root)
         elif args.deletewithoutaudio: Deleter.deleteFoldersWithoutAudio(args.root)

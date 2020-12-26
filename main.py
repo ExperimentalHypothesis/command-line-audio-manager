@@ -1,7 +1,6 @@
-import NameNormalizer, ArgParser
+from ArgParser import ArgParser
 
 if __name__ == "__main__":
-    ArgParser.ArgParser.run()
+    ArgParser.run()
 
 
-#

@@ -1,3 +1,6 @@
+import re
+
+
 class DataLoader:
     """ This class provides data that need to be shared across multiple other classes. """
 
@@ -6,4 +9,4 @@ class DataLoader:
                        '.msv', '.nmf', '.nsf', '.ogg', '.oga', '.mogg', '.opus', '.ra', '.rm', '.raw', '.sln', '.tta', '.voc', '.vox',
                        '.wav', '.wma', '.wv', '.webm', '.8svx']
 
-    # atmaRegexPattern =
+    broadcastRegexPattern = re.compile(r"(^\d\d)(\s)([\w+\s().,:#=\-`&'?!\[\]]*)(\s)(--)(\s)([\w+\s().,:#=\-`&'?!\[\]]*)(\s)(--)(\s)([\w+\s().,:#=\-`&'?!\[\]]*)$")

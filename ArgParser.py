@@ -5,6 +5,7 @@ from NameNormalizerAlbum import AlbumNameNormalizer
 from NameNormalizerSong import SongNameNormalizer
 from NameViewer import NameViewer
 from NameCheckerSong import SongNameChecker
+from Deleter import Deleter
 
 class ArgParser:
     """ Class responsible for parsing command line args. """
@@ -47,6 +48,12 @@ class ArgParser:
         # checking songs naming convention
         parser.add_argument("-shal",     "--showalbums", help="all albums that have songs with proper naming convention [01 Artist -- Album -- Song.ext] will printed green", action="store_true" )
         parser.add_argument("-mval",     "--movealbums", help="all albums that have songs with proper naming convention [01 Artist -- Album -- Song.ext] will moved to special folder", action="store_true" )
+
+        # deleting
+        parser.add_argument("-deem",    "--deleteempty", help="deletes all folder where no files are left", action="store_true")
+        parser.add_argument("-dewa"     "--deletewithoutaudio", help="delete folder without audio", action="store_true")
+        parser.add_argument("-dena"     "--deletenonaudio", help="delete non audio files", action="store_true")
+
 
 
         # general setters
@@ -117,4 +124,13 @@ class ArgParser:
             SongNameChecker.showAlbumsWithProperSongNames(args.root)
         elif args.movealbums:
             SongNameChecker.moveAlbumsWithProperSongNames(args.root)
+
+        # deleting some data
+        elif args.deleteempty:
+            Deleter.deleteEmptyFolders(args.root)
+        elif args.deletewithoutaudio:
+            Deleter.deleteFoldersWithoutAudio(args.root)
+        elif args.deletenonaudio:
+            Deleter.deleteNonAudioFiles(args.root)
+
 

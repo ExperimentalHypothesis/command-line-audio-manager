@@ -2,12 +2,11 @@ import subprocess
 import os, re
 from termcolor import colored
 from colorama import init
-
 init()  # to make coloring works on windows
-
+from DataLoader import DataLoader
 
 ## THIS CLASS IS USED AS FOR CHECKING ONLY
-class NameViewer:
+class NameViewer(DataLoader):
     """ Class validating Artist, Albums and Song names.
         At this point, the form of Artist name should be plain Artist Name (eg. Steve Roach)
         At this point, the form of Album should be:
@@ -114,7 +113,7 @@ class NameViewer:
             for album in os.listdir(os.path.join(root, artist)):
                 if not os.path.isdir(os.path.join(root, artist, album)):
                     continue
-                if all(SongNameChecker.broadcastRegexPattern.match(song) for song in os.listdir(os.path.join(root, artist, album))):
+                if all(NameViewer.broadcastRegexPattern.match(song) for song in os.listdir(os.path.join(root, artist, album))):
                     print(colored(os.path.join(root, artist, album), "green"))
                 else:
                     print(os.path.join(root, artist, album))
@@ -134,8 +133,7 @@ class NameViewer:
             for album in os.listdir(os.path.join(root, artist)):
                 if not os.path.isdir(os.path.join(root, artist, album)):
                     continue
-                if all(SongNameChecker.basicRegexPattern.match(song) for song in
-                       os.listdir(os.path.join(root, artist, album))):
+                if all(NameViewer.basicRegexPattern.match(song) for song in os.listdir(os.path.join(root, artist, album))):
                     print(colored(os.path.join(root, artist, album), "green"))
                 else:
                     print(os.path.join(root, artist, album) + " <--- NOT MATCHING BASIC REGEX")
@@ -148,6 +146,6 @@ class NameViewer:
 
 if __name__ == "__main__":
     root = r"C:\Users\lukas.kotatko\__Atma__Test"
-    NameViewer.listAlbumsWhoseAllSongsContainArtistName(root)
-    NameViewer.listAlbumsWhoseAllSongsContainAlbumName(root)
-    NameViewer.listAlbumsWithArtistName(root)
+    # NameViewer.listAlbumsWhoseAllSongsContainArtistName(root)
+    # NameViewer.listAlbumsWhoseAllSongsContainAlbumName(root)
+    NameViewer.listAlbumsWithSongsMatchingBasicRegex(root)

@@ -1,9 +1,13 @@
 import os
+from termcolor import colored
+from colorama import init
 
+init()
 from NameNormalizer import NameNormalizer
+from DataLoader import DataLoader
 
 
-class SongNameNormalizer(NameNormalizer):
+class SongNameNormalizer(NameNormalizer, DataLoader):
     """ Class handling everything concerning song renaming. """
 
     @staticmethod
@@ -97,11 +101,38 @@ class SongNameNormalizer(NameNormalizer):
                     continue
                 NameNormalizer.stripStringFromAlbumsSong(album, root, artist, album)
 
+    @staticmethod
+    def renameSongsToMatchBroadcastPattern(root):
+        """ Rename songs to match patter used in broadcast server.
+        This can be used only AFTER all the names are cleaned and songs matches basic regex pattern.
+        There is a check if a song matches basic regex pattern, if not, it will not be renamed to broadcast pattern.
 
+        Basic pattern: 01 song name.ext
+        Broadcast patter: 01 artist name -- album name -- song name.ext
+        """
 
+        for artist in os.listdir(root):
+            if not os.path.isdir(os.path.join(root, artist)):
+                continue
+            for album in os.listdir(os.path.join(root, artist)):
+                if not os.path.isdir(os.path.join(root, artist, album)):
+                    continue
+                if not all(SongNameNormalizer.basicRegexPattern.match(song) for song in os.listdir(os.path.join(root, artist, album))):
+                    print(colored(os.path.join(root, artist, album) + " <--- SONGS NOT MATCHING BASIC REGEX, RENAMING SKIPPED", "red"))
+                    for song in os.listdir(os.path.join(root, artist, album)):
+                        print(colored(f"\t {song}", "red"))
+                else:
+                    for song in os.listdir(os.path.join(root, artist, album)):
+                        if not os.path.isdir(os.path.join(root, artist, album, song)):
+                            src = os.path.join(root, artist, album, song)
+                            dirName, fileName = os.path.split(src)
+                            trackNr, trackName = fileName.split(" ", 1)
+                            newFileName = "".join([trackNr, " ", artist, " -- ", album, " -- ", trackName])
+                            dst = os.path.join(root, artist, album, newFileName)
+                            print(f"Renaming {src} -> {dst}")
+                            os.rename(src, dst)
 
 
 if __name__ == "__main__":
     root = r"C:\Users\lukas.kotatko\__Atma__Test"
-
-    SongNameNormalizer.stripAlbumNameFromSong(root)
+    SongNameNormalizer.renameSongsToMatchBroadcastPattern(root)

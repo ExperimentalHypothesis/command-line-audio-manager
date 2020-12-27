@@ -715,7 +715,7 @@ def change_bitrate(source_dir=os.getcwd()) -> None:
             if not os.path.exists(dirpath_target): 
                 os.makedirs(dirpath_target)
             print(f"encoding from {filepath_source} to {filepath_target}")
-            subprocess.run(f'ffmpeg -i "{filepath_source}" -metadata comment="ripped with lame @128k" -codec:a libmp3lame -b:a 128k -ar 44100 "{filepath_target}"')
+            # subprocess.run(f'ffmpeg -i "{filepath_source}" -metadata comment="ripped with lame @128k" -codec:a libmp3lame -b:a 128k -ar 44100 "{filepath_target}"')
 
 
 

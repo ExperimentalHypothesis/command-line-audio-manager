@@ -6,7 +6,7 @@ from NameNormalizerSong import SongNameNormalizer
 from NameViewer import NameViewer
 from FilesMover import Mover
 from FilesDeleter import Deleter
-
+from BitrateNormalizer import BitrateNormalizer
 
 class ArgParser:
     """ Class responsible for parsing command line args. """
@@ -58,6 +58,9 @@ class ArgParser:
         parser.add_argument("-deem",    "--deleteempty", help="deletes all folder where no files are left", action="store_true")
         parser.add_argument("-dewa",    "--deletewithoutaudio", help="delete folder without audio", action="store_true")
         parser.add_argument("-dena",    "--deletenonaudio", help="delete non audio files", action="store_true")
+
+        # bitrate normalization for broadcast
+        parser.add_argument("--norm"    "--normalizebitrate", help="normalizes bitrate for radio server [set up to 128k]", action="store_true")
 
 
 
@@ -115,4 +118,5 @@ class ArgParser:
         elif args.deletewithoutaudio: Deleter.deleteFoldersWithoutAudio(args.root)
         elif args.deletenonaudio: Deleter.deleteNonAudioFiles(args.root)
 
-
+        # bitrate normalization for broadcastin
+        elif args.normalizebitrate: BitrateNormalizer.normalizeSongBitrate(args.root)

@@ -1,3 +1,16 @@
+# WORKFLOW:
+# 0] check broadcast regex albums -> these can be directly moved and rebitrated [-brorgxls]
+# 1] check basic regex albums -> these can be renamed and rebitrated [-basrgxls]
+# 2] rename the ones that have the basic regex to broadcast regex [-reso]
+# 3] move the ones that have the broadcast regex pattern [-mval]
+# 4] convert them to mp3 128k [-norm -R "ATMA NAME NORMALIZATION DONE"]
+# 5] meanwhile delete empty folders from the previous folder
+
+
+# 5] clean the ones that do not have basic regex
+# 6] continue from step 1]
+
+
 import argparse
 
 from NameNormalizerArtist import ArtistNameNormalizer
@@ -31,15 +44,16 @@ class ArgParser:
         parser.add_argument("-altc",    "--titlecasealbum",  help="titlecase album", action="store_true")
         parser.add_argument("-allc",    "--lowercasealbum", help="lowercase album", action="store_true")
         parser.add_argument("-aluc",    "--uppercasealbum", help="uppercase album", action="store_true")
-        parser.add_argument("-alclar",  "--clearartistfromalbum", action="store_true")   # !!! use after moving to folders
+        parser.add_argument("-alclar",  "--clearartistfromalbum", help="clear artist name from album name [IMPORTANT - USE AFTER MOVING TO FOLDERS]", action="store_true")   # !!! use after moving to folders
 
-        # renaming songs
+        # renaming songs # TODO fill help
         parser.add_argument("-socl",    "--cleartokenfromsong", action="store_true")
         parser.add_argument("-sorgx",   "--clearregexfromsong", action="store_true")
         parser.add_argument("-sows",    "--stripwhitespacefromsong", action="store_true")
         parser.add_argument("-solc",    "--lowercasesong", action="store_true")
         parser.add_argument("-souc",    "--uppercasesong", action="store_true")
         parser.add_argument("-sotc",    "--titlecasesong", action="store_true")
+        parser.add_argument("-reso",    "--renamesongs", action="store_true")
 
         # listing artists, albums, songs, checking naming conventions, marking them in color. this is for quick visual reference about current state
         parser.add_argument("-arls",    "--listartists", help="prints out artist folder to terminal, it prints out all files and folders what are in first level", action="store_true")
@@ -48,11 +62,11 @@ class ArgParser:
         parser.add_argument("-aals",    "--listalbumswithartistname", help="albums that have artist name as part of its name will be printed in red", action="store_true")
         parser.add_argument("-alarls",  "--listalbumswithartistnameinallsongs", help="albums that have all songs which contain artist name are printed in red", action="store_true")
         parser.add_argument("-alalls",  "--listalbumswithalbumnameinallsongs", help="albums that have all songs which contain albums name are printed in red", action="store_true")
-        parser.add_argument("-bargxls", "--listalbumsmatchbasicregex", help="all albums that have songs with proper naming convention [01 song name.ext] will printed green. These are ready to be renamed to broadcast.", action="store_true" )
-        parser.add_argument("-brogxls", "--listalbumsmatchbroadcastregex", help="all albums that have songs with proper naming convention [01 artist name -- album name -- song name.ext] will printed green. These are ready to be moved away.", action="store_true" )
+        parser.add_argument("-basrgxls", "--listalbumsmatchbasicregex", help="all albums that have songs with proper naming convention [01 song name.ext] will printed green. These are ready to be renamed to broadcast.", action="store_true" )
+        parser.add_argument("-brorgxls", "--listalbumsmatchbroadcastregex", help="all albums that have songs with proper naming convention [01 artist name -- album name -- song name.ext] will printed green. These are ready to be moved away.", action="store_true" )
 
         # moving files
-        parser.add_argument("-mval",     "--movealbums", help="all albums that have songs with proper naming convention [01 Artist -- Album -- Song.ext] will moved to special folder", action="store_true" )
+        parser.add_argument("-mval",     "--movealbums", help="all albums that have songs with proper naming convention [01 artist name -- album name -- song name.ext] will moved to special folder", action="store_true" )
 
         # deleting files from filesystem
         parser.add_argument("-deem",    "--deleteempty", help="deletes all folder where no files are left", action="store_true")
@@ -60,9 +74,7 @@ class ArgParser:
         parser.add_argument("-dena",    "--deletenonaudio", help="delete non audio files", action="store_true")
 
         # bitrate normalization for broadcast
-        parser.add_argument("--norm"    "--normalizebitrate", help="normalizes bitrate for radio server [set up to 128k]", action="store_true")
-
-
+        parser.add_argument("-norm",    "--normalizebitrate", help="normalizes bitrate for radio server [set up to 128k]", action="store_true")
 
         # general setters
         parser.add_argument("-R", "--root", type=str, required=True)
@@ -99,6 +111,7 @@ class ArgParser:
         elif args.lowercasesong: SongNameNormalizer.lowercase(args.root)
         elif args.uppercasesong: SongNameNormalizer.uppercase(args.root)
         elif args.titlecasesong: SongNameNormalizer.titlecase(args.root)
+        elif args.renamesongs: SongNameNormalizer.renameSongsToMatchBroadcastPattern(args.root)
 
         # listing artists, albums, songs, checking naming conventions, marking them in color. this is for quick visual reference about current state
         elif args.listartists: NameViewer.listAllArtist(args.root)
@@ -111,12 +124,12 @@ class ArgParser:
         elif args.listalbumsmatchbroadcastregex: NameViewer.listAlbumsWithSongsMatchingBroadcastRegex(args.root)
 
         # moving files
-        elif args.movealbums: Mover.moveAlbumsWithProperSongNames(args.root)
+        elif args.movealbums: Mover.moveAlbumsWithSongsMatchingBroadcastRegex(args.root)
 
         # deleting some data
         elif args.deleteempty: Deleter.deleteEmptyFolders(args.root)
         elif args.deletewithoutaudio: Deleter.deleteFoldersWithoutAudio(args.root)
         elif args.deletenonaudio: Deleter.deleteNonAudioFiles(args.root)
 
-        # bitrate normalization for broadcastin
+        # bitrate normalization for broadcasting
         elif args.normalizebitrate: BitrateNormalizer.normalizeSongBitrate(args.root)

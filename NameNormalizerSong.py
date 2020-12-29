@@ -131,8 +131,3 @@ class SongNameNormalizer(NameNormalizer, DataLoader):
                             dst = os.path.join(root, artist, album, newFileName)
                             print(f"Renaming {src} -> {dst}")
                             os.rename(src, dst)
-
-
-if __name__ == "__main__":
-    root = r"C:\Users\lukas.kotatko\__Atma__Test"
-    SongNameNormalizer.renameSongsToMatchBroadcastPattern(root)

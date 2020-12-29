@@ -9,7 +9,7 @@ class Mover(DataLoader):
     """  Class responsible for moving files to another place."""
 
     @staticmethod
-    def moveAlbumsWithProperSongNames(root) -> None:
+    def moveAlbumsWithSongsMatchingBroadcastRegex(root) -> None:
         """ If albums have all songs with proper naming convention, they are moved to folder.
 
             Naming convention: 01 Artist -- Album -- Song.ext
@@ -33,9 +33,3 @@ class Mover(DataLoader):
                     except FileExistsError as e:
                         print(f"moving {src} to {dst}")
                         shutil.move(src, dst)
-
-
-
-if __name__ == "__main__":
-    root = r"C:\Users\lukas.kotatko\__Atma__Test"
-    Mover.listAlbumsWithSongsMatchingBasicRegex(root)
